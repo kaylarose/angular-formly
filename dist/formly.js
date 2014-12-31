@@ -173,6 +173,14 @@ angular.module('formly.render')
 					//Post gets called after angular has created the FormController
 					//Now pass the FormController back up to the parent scope
 					scope.formOnParentScope = scope[attr.name];
+					if (!scope.formOnParentScope) {
+						/// The name attribute may be an interpolatable string 
+						// (as supported by Angular ~1.3.8)
+						// so attempt to evaluate it here, and use that as the form name.
+						// NOTE: This is required for things like sub-forms, and dynamically
+						// created forms.
+						scope.formOnParentScope = scope.$eval(attr.name);
+					}
 				}
 			};
 		},
